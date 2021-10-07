@@ -532,9 +532,9 @@ parcelHelpers.defineInteropFlag(exports);
 var _three = require("three");
 var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-var _fragmentGlsl = require("./shader/fragment.glsl");
+var _fragmentGlsl = require("/shader/fragment.glsl");
 var _fragmentGlslDefault = parcelHelpers.interopDefault(_fragmentGlsl);
-var _vertexGlsl = require("./shader/vertex.glsl");
+var _vertexGlsl = require("/shader/vertex.glsl");
 var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
 class Sketch {
     constructor(options){
@@ -559,7 +559,23 @@ class Sketch {
         this.resize();
         this.render();
         this.setupResize();
-    // this.settings();
+        // this.settings();
+        this.handleImages();
+    }
+    handleImages() {
+        let images = [
+            ...document.querySelectorAll("img")
+        ];
+        images.forEach((im, i)=>{
+            let mat = this.material.clone();
+            console.log("uniforms", mat.uniforms);
+            mat.uniforms.texture1.value = new _three.Texture(im);
+            mat.uniforms.texture1.value.needsUpdate = true;
+            let geo = new _three.PlaneBufferGeometry(1.5, 1, 20, 20);
+            let mesh = new _three.Mesh(geo, mat);
+            this.scene.add(mesh);
+            mesh.position.y = i * 1.2;
+        });
     }
     settings() {
         let that = this;
@@ -589,6 +605,11 @@ class Sketch {
             uniforms: {
                 time: {
                     value: 0
+                },
+                // time: { type: "f", value: 0 },
+                texture1: {
+                    type: "t",
+                    value: null
                 },
                 resolution: {
                     value: new _three.Vector4()
@@ -625,7 +646,7 @@ new Sketch({
     dom: document.getElementById("container")
 });
 
-},{"three/examples/jsm/controls/OrbitControls.js":"fPaua","./shader/fragment.glsl":"bsjnD","./shader/vertex.glsl":"h9Sxp","@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","three":"1AKvZ"}],"fPaua":[function(require,module,exports) {
+},{"three/examples/jsm/controls/OrbitControls.js":"fPaua","@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","three":"1AKvZ","/shader/fragment.glsl":"bsjnD","/shader/vertex.glsl":"h9Sxp"}],"fPaua":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "OrbitControls", ()=>OrbitControls
@@ -30959,7 +30980,7 @@ if (typeof window !== 'undefined') {
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6"}],"bsjnD":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvoid main()\t{\n\t// vec2 newUV = (vUv - vec2(0.5))*resolution.zw + vec2(0.5);\n\tgl_FragColor = vec4(vUv,0.0,1.);\n}";
+module.exports = "#define GLSLIFY 1\n\nuniform float time; \nuniform float progress;\nuniform sampler2D texture1;\nuniform vec4 resolution;\n\nvarying vec2 vUv;\nvarying vec3 vPosition;\n\nfloat PI = 3.14159265358979;\n\nvoid main()\t{\n\tvec4 t = texture2D(texture1, vUv);\n\n\tgl_FragColor = t;\n}";
 
 },{}],"h9Sxp":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvoid main() {\n  vUv = uv;\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";

@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import fragment from "./shader/fragment.glsl";
-import vertex from "./shader/vertex.glsl";
+import fragment from "/shader/fragment.glsl";
+import vertex from "/shader/vertex.glsl";
 // import * as dat from "dat.gui";
 // import gsap from "gsap";
 
@@ -42,6 +42,22 @@ export default class Sketch {
     this.render();
     this.setupResize();
     // this.settings();
+    this.handleImages();
+  }
+
+  handleImages() {
+    let images = [...document.querySelectorAll("img")];
+    images.forEach((im, i) => {
+      let mat = this.material.clone();
+      console.log("uniforms", mat.uniforms);
+      mat.uniforms.texture1.value = new THREE.Texture(im);
+      mat.uniforms.texture1.value.needsUpdate = true;
+
+      let geo = new THREE.PlaneBufferGeometry(1.5, 1, 20, 20);
+      let mesh = new THREE.Mesh(geo, mat);
+      this.scene.add(mesh);
+      mesh.position.y = i * 1.2;
+    });
   }
 
   settings() {
@@ -74,6 +90,8 @@ export default class Sketch {
       side: THREE.DoubleSide,
       uniforms: {
         time: { value: 0 },
+        // time: { type: "f", value: 0 },
+        texture1: { type: "t", value: null },
         resolution: { value: new THREE.Vector4() },
       },
       // wireframe: true,
