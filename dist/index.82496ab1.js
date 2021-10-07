@@ -560,6 +560,8 @@ class Sketch {
         this.render();
         this.setupResize();
         // this.settings();
+        this.materials = [];
+        this.meshes = [];
         this.handleImages();
     }
     handleImages() {
@@ -568,13 +570,17 @@ class Sketch {
         ];
         images.forEach((im, i)=>{
             let mat = this.material.clone();
+            this.materials.push(mat);
             console.log("uniforms", mat.uniforms);
             mat.uniforms.texture1.value = new _three.Texture(im);
             mat.uniforms.texture1.value.needsUpdate = true;
             let geo = new _three.PlaneBufferGeometry(1.5, 1, 20, 20);
             let mesh = new _three.Mesh(geo, mat);
             this.scene.add(mesh);
+            this.meshes.push(mesh);
             mesh.position.y = i * 1.2;
+        // mesh.rotation.y = -0.3;
+        // mesh.rotation.z = -0.3;
         });
     }
     settings() {
@@ -636,6 +642,9 @@ class Sketch {
     render() {
         if (!this.isPlaying) return;
         this.time += 0.05;
+        if (this.materials) this.materials.forEach((m)=>{
+            m.uniforms.time.value = this.time;
+        });
         this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
@@ -30983,7 +30992,7 @@ if (typeof window !== 'undefined') {
 module.exports = "#define GLSLIFY 1\n\nuniform float time; \nuniform float progress;\nuniform sampler2D texture1;\nuniform vec4 resolution;\n\nvarying vec2 vUv;\nvarying vec3 vPosition;\n\nfloat PI = 3.14159265358979;\n\nvoid main()\t{\n\tvec4 t = texture2D(texture1, vUv);\n\n\tgl_FragColor = t;\n}";
 
 },{}],"h9Sxp":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvoid main() {\n  vUv = uv;\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\nvarying vec2 vUv;\nvarying vec3 vPosition;\nfloat PI = 3.14159265358979;\n\nvoid main() {\n  vUv = (uv - vec2(0.5 ))*0.9 + vec2(0.5);\n\n  vec3 pos = position;\n  pos.y += sin(time*0.5)*0.02;\n  vUv.y -= sin(time*0.5)*0.02;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n}";
 
 },{}]},["iF9r4","hwBw6"], "hwBw6", "parcelRequire94c2")
 

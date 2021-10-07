@@ -42,13 +42,17 @@ export default class Sketch {
     this.render();
     this.setupResize();
     // this.settings();
+    this.materials = [];
+    this.meshes = [];
     this.handleImages();
   }
 
   handleImages() {
     let images = [...document.querySelectorAll("img")];
+
     images.forEach((im, i) => {
       let mat = this.material.clone();
+      this.materials.push(mat);
       console.log("uniforms", mat.uniforms);
       mat.uniforms.texture1.value = new THREE.Texture(im);
       mat.uniforms.texture1.value.needsUpdate = true;
@@ -56,7 +60,10 @@ export default class Sketch {
       let geo = new THREE.PlaneBufferGeometry(1.5, 1, 20, 20);
       let mesh = new THREE.Mesh(geo, mat);
       this.scene.add(mesh);
+      this.meshes.push(mesh);
       mesh.position.y = i * 1.2;
+      // mesh.rotation.y = -0.3;
+      // mesh.rotation.z = -0.3;
     });
   }
 
@@ -120,6 +127,12 @@ export default class Sketch {
   render() {
     if (!this.isPlaying) return;
     this.time += 0.05;
+    if (this.materials) {
+      this.materials.forEach((m) => {
+        m.uniforms.time.value = this.time;
+      });
+    }
+
     this.material.uniforms.time.value = this.time;
     requestAnimationFrame(this.render.bind(this));
     this.renderer.render(this.scene, this.camera);
