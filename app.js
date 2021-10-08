@@ -19,7 +19,7 @@ window.addEventListener("wheel", (e) => {
 let objs = Array(5).fill({ dist: 0 });
 
 function raf() {
-  // console.log("speed = ", speed);
+  console.log("speed = ", speed);
   position += speed;
   speed *= 0.8;
 
@@ -27,6 +27,13 @@ function raf() {
     o.dist = Math.min(Math.abs(position - i), 1);
     o.dist = 1 - o.dist ** 2;
     elems[i].style.transform = `scale(${1 + 0.4 * o.dist})`;
+
+    let scale = 1 + 0.1 * o.dist;
+    sketch.meshes[i].position.y = i * 1.2 - position * 1.2;
+    sketch.meshes[i].scale.set(scale, scale, scale);
+
+    // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
+    sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
   });
 
   rounded = Math.round(position);
@@ -37,6 +44,12 @@ function raf() {
 
   // block.style.transform = `translate(0, ${position * 100 + 50}px)`;
   wrap.style.transform = `translate(0, ${-position * 100 + 50}px)`;
+
+  // console.log("meshes = ", sketch.meshes);
+  // sketch.meshes.forEach((mesh, i) => {
+  //   mesh.position.y = i * 1.2 + position * 1.2;
+  //   // mesh.scale.set(i*1.2 + position*1.2);
+  // });
   window.requestAnimationFrame(raf);
 }
 

@@ -5,7 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import fragment from "/shader/fragment.glsl";
 import vertex from "/shader/vertex.glsl";
 // import * as dat from "dat.gui";
-// import gsap from "gsap";
+import gsap from "gsap";
 
 export default class Sketch {
   constructor(options) {
@@ -14,10 +14,14 @@ export default class Sketch {
     this.container = options.dom;
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+    });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(0xeeeeee, 1);
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
 
     this.container.appendChild(this.renderer.domElement);
 
@@ -44,26 +48,38 @@ export default class Sketch {
     // this.settings();
     this.materials = [];
     this.meshes = [];
+    this.groups = [];
     this.handleImages();
   }
 
   handleImages() {
     let images = [...document.querySelectorAll("img")];
+    console.log("images = ", images);
 
     images.forEach((im, i) => {
       let mat = this.material.clone();
       this.materials.push(mat);
-      console.log("uniforms", mat.uniforms);
+      let group = new THREE.Group();
+      // mat.wireframe = true;
       mat.uniforms.texture1.value = new THREE.Texture(im);
       mat.uniforms.texture1.value.needsUpdate = true;
 
       let geo = new THREE.PlaneBufferGeometry(1.5, 1, 20, 20);
       let mesh = new THREE.Mesh(geo, mat);
-      this.scene.add(mesh);
+
+      group.add(mesh);
+      this.groups.push(group);
+
+      this.scene.add(group);
       this.meshes.push(mesh);
+
       mesh.position.y = i * 1.2;
-      // mesh.rotation.y = -0.3;
-      // mesh.rotation.z = -0.3;
+      mesh.position.x = 0.6;
+      // mesh.position.z = 0.1;
+
+      group.rotation.y = -0.4;
+      group.rotation.x = -0.2;
+      group.rotation.z = -0.2;
     });
   }
 
@@ -96,13 +112,13 @@ export default class Sketch {
       },
       side: THREE.DoubleSide,
       uniforms: {
-        time: { value: 0 },
-        // time: { type: "f", value: 0 },
+        time: { type: "f", value: 0 },
+        distanceFromCenter: { type: "f", value: 0 },
         texture1: { type: "t", value: null },
-        resolution: { value: new THREE.Vector4() },
+        resolution: { type: "v4", value: new THREE.Vector4() },
       },
       // wireframe: true,
-      // transparent: true,
+      transparent: true,
       vertexShader: vertex,
       fragmentShader: fragment,
     });
@@ -139,6 +155,6 @@ export default class Sketch {
   }
 }
 
-new Sketch({
-  dom: document.getElementById("container"),
-});
+// new Sketch({
+//   dom: document.getElementById("container"),
+// });

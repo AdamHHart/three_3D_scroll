@@ -531,6 +531,11 @@
     "shebang-command" "^1.2.0"
     "which" "^1.2.9"
 
+"dat.gui@^0.7.7":
+  "integrity" "sha512-sRl/28gF/XRC5ywC9I4zriATTsQcpSsRG7seXCPnTkK8/EQMIbCu5NPMpICLGxX9ZEUvcXR3ArLYCtgreFoMDw=="
+  "resolved" "https://registry.npmjs.org/dat.gui/-/dat.gui-0.7.7.tgz"
+  "version" "0.7.7"
+
 "debug@^2.2.0", "debug@^2.3.3":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
   "resolved" "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz"
@@ -930,6 +935,11 @@
   "integrity" "sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg=="
   "resolved" "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz"
   "version" "4.2.8"
+
+"gsap@^3.8.0":
+  "integrity" "sha512-cvpzKkWFePDZCycwXwJnDSpTR3j+a4QLQF/t0c+pXqzRESgAYx5hieaoshzZFjbwsARqr0+5c3GKE7wI273w/g=="
+  "resolved" "https://registry.npmjs.org/gsap/-/gsap-3.8.0.tgz"
+  "version" "3.8.0"
 
 "has-flag@^4.0.0":
   "integrity" "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ=="
