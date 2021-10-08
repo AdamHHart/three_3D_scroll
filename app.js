@@ -1,4 +1,5 @@
 import Sketch from "./module";
+import gsap from "gsap";
 
 let sketch = new Sketch({
   dom: document.getElementById("container"),
@@ -64,12 +65,29 @@ raf();
 let navs = [...document.querySelectorAll("li")];
 let nav = document.querySelector(".nav");
 
+let rots = sketch.groups.map((e) => e.rotation);
+
 nav.addEventListener("mouseenter", () => {
   attractMode = true;
+  gsap.to(rots, {
+    duration: 0.3,
+    x: -0.5,
+    y: 0,
+    z: 0,
+  });
 });
 
 nav.addEventListener("mouseleave", () => {
   attractMode = false;
+  gsap.to(rots, {
+    duration: 0.3,
+    x: -0.2,
+    y: -0.4,
+    z: -0.2,
+  });
+  // group.rotation.y = -0.4;
+  // group.rotation.x = -0.2;
+  // group.rotation.z = -0.2;
 });
 
 navs.forEach((el) => {

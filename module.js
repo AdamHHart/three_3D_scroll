@@ -123,10 +123,10 @@ export default class Sketch {
       fragmentShader: fragment,
     });
 
-    this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
+    // this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
 
-    this.plane = new THREE.Mesh(this.geometry, this.material);
-    this.scene.add(this.plane);
+    // this.plane = new THREE.Mesh(this.geometry, this.material);
+    // this.scene.add(this.plane);
   }
 
   stop() {

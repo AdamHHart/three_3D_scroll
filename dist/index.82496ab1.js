@@ -458,6 +458,8 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _module = require("./module");
 var _moduleDefault = parcelHelpers.interopDefault(_module);
+var _gsap = require("gsap");
+var _gsapDefault = parcelHelpers.interopDefault(_gsap);
 let sketch = new _moduleDefault.default({
     dom: document.getElementById("container")
 });
@@ -512,11 +514,28 @@ let navs = [
     ...document.querySelectorAll("li")
 ];
 let nav = document.querySelector(".nav");
+let rots = sketch.groups.map((e)=>e.rotation
+);
 nav.addEventListener("mouseenter", ()=>{
     attractMode = true;
+    _gsapDefault.default.to(rots, {
+        duration: 0.3,
+        x: -0.5,
+        y: 0,
+        z: 0
+    });
 });
 nav.addEventListener("mouseleave", ()=>{
     attractMode = false;
+    _gsapDefault.default.to(rots, {
+        duration: 0.3,
+        x: -0.2,
+        y: -0.4,
+        z: -0.2
+    });
+// group.rotation.y = -0.4;
+// group.rotation.x = -0.2;
+// group.rotation.z = -0.2;
 });
 navs.forEach((el)=>{
     el.addEventListener("mouseover", (e)=>{
@@ -525,7 +544,7 @@ navs.forEach((el)=>{
     });
 });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt"}],"c0rw6":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt","gsap":"iCVLt"}],"c0rw6":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -677,9 +696,9 @@ class Sketch {
             vertexShader: _vertexGlslDefault.default,
             fragmentShader: _fragmentGlslDefault.default
         });
-        this.geometry = new _three.PlaneGeometry(1, 1, 1, 1);
-        this.plane = new _three.Mesh(this.geometry, this.material);
-        this.scene.add(this.plane);
+    // this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
+    // this.plane = new THREE.Mesh(this.geometry, this.material);
+    // this.scene.add(this.plane);
     }
     stop() {
         this.isPlaying = false;
