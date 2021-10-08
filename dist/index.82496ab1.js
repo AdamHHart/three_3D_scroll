@@ -461,6 +461,8 @@ var _moduleDefault = parcelHelpers.interopDefault(_module);
 let sketch = new _moduleDefault.default({
     dom: document.getElementById("container")
 });
+let attractMode = false;
+let attractTo = 0;
 let speed = 0;
 let position = 0;
 let rounded = 0;
@@ -492,9 +494,12 @@ function raf() {
     });
     rounded = Math.round(position);
     let diff = rounded - position;
-    position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.015;
-    // block.style.transform = `translate(0, ${position * 100 + 50}px)`;
-    wrap.style.transform = `translate(0, ${-position * 100 + 50}px)`;
+    if (attractMode) position += -(position - attractTo) * 0.02;
+    else {
+        position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.025;
+        // block.style.transform = `translate(0, ${position * 100 + 50}px)`;
+        wrap.style.transform = `translate(0, ${-position * 100 + 50}px)`;
+    }
     // console.log("meshes = ", sketch.meshes);
     // sketch.meshes.forEach((mesh, i) => {
     //   mesh.position.y = i * 1.2 + position * 1.2;
@@ -503,6 +508,22 @@ function raf() {
     window.requestAnimationFrame(raf);
 }
 raf();
+let navs = [
+    ...document.querySelectorAll("li")
+];
+let nav = document.querySelector(".nav");
+nav.addEventListener("mouseenter", ()=>{
+    attractMode = true;
+});
+nav.addEventListener("mouseleave", ()=>{
+    attractMode = false;
+});
+navs.forEach((el)=>{
+    el.addEventListener("mouseover", (e)=>{
+        attractTo = Number(e.target.getAttribute("data-nav"));
+        console.log(attractTo);
+    });
+});
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt"}],"c0rw6":[function(require,module,exports) {
 exports.interopDefault = function(a) {

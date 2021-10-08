@@ -4,6 +4,8 @@ let sketch = new Sketch({
   dom: document.getElementById("container"),
 });
 
+let attractMode = false;
+let attractTo = 0;
 let speed = 0;
 let position = 0;
 let rounded = 0;
@@ -40,10 +42,14 @@ function raf() {
 
   let diff = rounded - position;
 
-  position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.015;
+  if (attractMode) {
+    position += -(position - attractTo) * 0.02;
+  } else {
+    position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.025;
 
-  // block.style.transform = `translate(0, ${position * 100 + 50}px)`;
-  wrap.style.transform = `translate(0, ${-position * 100 + 50}px)`;
+    // block.style.transform = `translate(0, ${position * 100 + 50}px)`;
+    wrap.style.transform = `translate(0, ${-position * 100 + 50}px)`;
+  }
 
   // console.log("meshes = ", sketch.meshes);
   // sketch.meshes.forEach((mesh, i) => {
@@ -54,3 +60,21 @@ function raf() {
 }
 
 raf();
+
+let navs = [...document.querySelectorAll("li")];
+let nav = document.querySelector(".nav");
+
+nav.addEventListener("mouseenter", () => {
+  attractMode = true;
+});
+
+nav.addEventListener("mouseleave", () => {
+  attractMode = false;
+});
+
+navs.forEach((el) => {
+  el.addEventListener("mouseover", (e) => {
+    attractTo = Number(e.target.getAttribute("data-nav"));
+    console.log(attractTo);
+  });
+});
