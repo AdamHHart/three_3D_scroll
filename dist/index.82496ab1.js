@@ -477,7 +477,7 @@ let objs = Array(5).fill({
     dist: 0
 });
 function raf() {
-    console.log("speed = ", speed);
+    // console.log("speed = ", speed);
     position += speed;
     speed *= 0.8;
     objs.forEach((o, i)=>{
@@ -31018,10 +31018,10 @@ if (typeof window !== 'undefined') {
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6"}],"bsjnD":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\n\nuniform float time; \nuniform float progress;\nuniform float distanceFromCenter;\nuniform sampler2D texture1;\nuniform vec4 resolution;\n\nvarying vec2 vUv;\nvarying vec3 vPosition;\n\nfloat PI = 3.14159265358979;\n\nvoid main()\t{\n\tvec4 t = texture2D(texture1, vUv);\n\n\tgl_FragColor = t;\n\tgl_FragColor.a = clamp(distanceFromCenter, 0.2, 1.);\n}";
+module.exports = "#define GLSLIFY 1\n\nuniform float time; \nuniform float progress;\nuniform float distanceFromCenter;\nuniform sampler2D texture1;\nuniform vec4 resolution;\n\nvarying vec2 vUv;\nvarying vec3 vPosition;\n\nfloat PI = 3.14159265358979;\n\nvoid main()\t{\n\tvec4 t = texture2D(texture1, vUv);\n\tfloat bw = (t.r + t.b + t.g)/3.0;\n\tvec4 another = vec4(bw,bw,bw,1.0);\n\n\tgl_FragColor = mix(another, t, distanceFromCenter);\n\tgl_FragColor.a = clamp(distanceFromCenter, 0.2, 1.);\n}";
 
 },{}],"h9Sxp":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float time;\nvarying vec2 vUv;\nvarying vec3 vPosition;\nfloat PI = 3.14159265358979;\n\nvoid main() {\n  vUv = (uv - vec2(0.5 ))*0.9 + vec2(0.5);\n  vec3 pos = position;\n\n  pos.y += sin(PI*uv.x)*0.02; \n  pos.z += sin(PI*uv.x)*0.04; \n\n  \n  pos.y += sin(time*0.5)*0.02;\n  vUv.y -= sin(time*0.5)*0.02;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\nvarying vec2 vUv;\nvarying vec3 vPosition;\nfloat PI = 3.14159265358979;\nuniform float distanceFromCenter;\n\nvoid main() {\n\n  vUv = (uv - vec2(0.5))*(0.8 - 0.2 * distanceFromCenter*(2. - distanceFromCenter)) + vec2(0.5);\n  vec3 pos = position;\n\n  pos.y += sin(PI*uv.x)*0.02; \n  pos.z += sin(PI*uv.x)*0.04; \n\n  \n  pos.y += sin(time*0.5)*0.02;\n  vUv.y -= sin(time*0.5)*0.02;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n}";
 
 },{}],"iCVLt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

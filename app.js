@@ -19,7 +19,7 @@ window.addEventListener("wheel", (e) => {
 let objs = Array(5).fill({ dist: 0 });
 
 function raf() {
-  console.log("speed = ", speed);
+  // console.log("speed = ", speed);
   position += speed;
   speed *= 0.8;
 
