@@ -12,6 +12,7 @@ let position = 0;
 let rounded = 0;
 let block = document.getElementById("block");
 let wrap = document.getElementById("wrap");
+let headlines = document.getElementById("headline");
 let elems = [...document.querySelectorAll(".n")];
 
 window.addEventListener("wheel", (e) => {
@@ -37,6 +38,12 @@ function raf() {
 
     // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
     sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
+
+    if (o.dist > 0.98) {
+      headlines.opacity = 1;
+    }
+    // console.log("o.dist = ", o);
+    // console.log("i = ", i);
   });
 
   rounded = Math.round(position);
@@ -48,15 +55,9 @@ function raf() {
   } else {
     position += Math.sign(diff) * Math.pow(Math.abs(diff), 0.7) * 0.025;
 
-    // block.style.transform = `translate(0, ${position * 100 + 50}px)`;
     wrap.style.transform = `translate(0, ${-position * 100 + 50}px)`;
   }
 
-  // console.log("meshes = ", sketch.meshes);
-  // sketch.meshes.forEach((mesh, i) => {
-  //   mesh.position.y = i * 1.2 + position * 1.2;
-  //   // mesh.scale.set(i*1.2 + position*1.2);
-  // });
   window.requestAnimationFrame(raf);
 }
 
