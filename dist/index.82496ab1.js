@@ -494,7 +494,16 @@ function raf() {
         sketch.meshes[i].scale.set(scale, scale, scale);
         // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
         sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
-        if (o.dist > 0.98) headlines.opacity = 1;
+        if (o.dist > 0.9) {
+            // headlines.style.color = "#ff0000";
+            elems[i].style.color = "#ff0000";
+            elems[i].style.transition = "0.5s";
+            elems[i].style.opacity = 1;
+            console.log("headlines = ", headlines);
+        } else {
+            elems[i].style.color = "#000000";
+            elems[i].style.opacity = 0;
+        }
     // console.log("o.dist = ", o);
     // console.log("i = ", i);
     });
