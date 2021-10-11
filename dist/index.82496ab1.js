@@ -460,6 +460,7 @@ var _module = require("./module");
 var _moduleDefault = parcelHelpers.interopDefault(_module);
 var _gsap = require("gsap");
 var _gsapDefault = parcelHelpers.interopDefault(_gsap);
+var _three = require("three");
 let sketch = new _moduleDefault.default({
     dom: document.getElementById("container")
 });
@@ -488,14 +489,13 @@ function raf() {
     objs.forEach((o, i)=>{
         o.dist = Math.min(Math.abs(position - i), 1);
         o.dist = 1 - o.dist ** 2;
-        elems[i].style.transform = `scale(${1 + 0.4 * o.dist})`;
-        let scale = 1 + 0.1 * o.dist;
+        elems[i].style.transform = `scale(${1 + 0.3 * o.dist})`;
+        let scale = 1 + 0.2 * o.dist;
         sketch.meshes[i].position.y = i * 1.2 - position * 1.2;
         sketch.meshes[i].scale.set(scale, scale, scale);
         // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
         sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
         if (o.dist > 0.9) {
-            // headlines.style.color = "#ff0000";
             elems[i].style.color = "#ff0000";
             elems[i].style.transition = "0.5s";
             elems[i].style.opacity = 1;
@@ -504,8 +504,7 @@ function raf() {
             elems[i].style.color = "#000000";
             elems[i].style.opacity = 0;
         }
-    // console.log("o.dist = ", o);
-    // console.log("i = ", i);
+        if (i) wrap.style.background = "#000000";
     });
     rounded = Math.round(position);
     let diff = rounded - position;
@@ -551,7 +550,7 @@ navs.forEach((el)=>{
     });
 });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt","gsap":"iCVLt"}],"c0rw6":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt","gsap":"iCVLt","three":"1AKvZ"}],"c0rw6":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
