@@ -461,6 +461,7 @@ var _moduleDefault = parcelHelpers.interopDefault(_module);
 var _gsap = require("gsap");
 var _gsapDefault = parcelHelpers.interopDefault(_gsap);
 var _three = require("three");
+var _gsapCore = require("gsap/gsap-core");
 let sketch = new _moduleDefault.default({
     dom: document.getElementById("container")
 });
@@ -475,6 +476,8 @@ let headlines = document.getElementById("headline");
 let elems = [
     ...document.querySelectorAll(".n")
 ];
+// let background = new THREE.background();
+// background.color = "#ffffff";
 window.addEventListener("wheel", (e)=>{
     // console.log("e = ", e);
     speed += e.deltaY * 0.0003;
@@ -482,6 +485,7 @@ window.addEventListener("wheel", (e)=>{
 let objs = Array(5).fill({
     dist: 0
 });
+console.log("objs = ", objs);
 function raf() {
     // console.log("speed = ", speed);
     position += speed;
@@ -495,16 +499,16 @@ function raf() {
         sketch.meshes[i].scale.set(scale, scale, scale);
         // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
         sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
+        // console.log("o.dist = = ", o.dist);
         if (o.dist > 0.9) {
+            // console.log("i = ", i);
             elems[i].style.color = "#ff0000";
             elems[i].style.transition = "0.5s";
             elems[i].style.opacity = 1;
-            console.log("headlines = ", headlines);
         } else {
             elems[i].style.color = "#000000";
             elems[i].style.opacity = 0;
         }
-        if (i) wrap.style.background = "#000000";
     });
     rounded = Math.round(position);
     let diff = rounded - position;
@@ -550,7 +554,7 @@ navs.forEach((el)=>{
     });
 });
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt","gsap":"iCVLt","three":"1AKvZ"}],"c0rw6":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"c0rw6","./module":"1JSwt","gsap":"iCVLt","three":"1AKvZ","gsap/gsap-core":"3CNdC"}],"c0rw6":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -595,6 +599,7 @@ var _vertexGlslDefault = parcelHelpers.interopDefault(_vertexGlsl);
 // import * as dat from "dat.gui";
 var _gsap = require("gsap");
 var _gsapDefault = parcelHelpers.interopDefault(_gsap);
+let whatIsThis = null;
 class Sketch {
     constructor(options){
         this.scene = new _three.Scene();
@@ -611,6 +616,7 @@ class Sketch {
         this.renderer.outputEncoding = _three.sRGBEncoding;
         this.container.appendChild(this.renderer.domElement);
         this.camera = new _three.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 1000);
+        whatIsThis = this;
         // var frustumSize = 10;
         // var aspect = window.innerWidth / window.innerHeight;
         // this.camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, -1000, 1000 );
@@ -721,6 +727,62 @@ class Sketch {
         if (this.materials) this.materials.forEach((m)=>{
             m.uniforms.time.value = this.time;
         });
+        let speed = 0;
+        let position = 0;
+        let elems = [
+            ...document.querySelectorAll(".n")
+        ];
+        window.addEventListener("wheel", (e)=>{
+            speed += e.deltaY * 0.0003;
+        });
+        let images = Array(5).fill({
+            dist: 0
+        });
+        function colorChangeOnScroll() {
+            position += speed;
+            speed *= 0.8;
+            images.forEach((o, i)=>{
+                o.dist = Math.min(Math.abs(position - i), 1);
+                o.dist = 1 - o.dist ** 2;
+                // console.log("o.dist = = ", o.dist);
+                // for (let j = 0; j < images.length; j++) {
+                if (o.dist > 0.9) {
+                    // console.log("i ======= ", i);
+                    if (i === 2) {
+                        console.log("i = ", i);
+                        // console.log("in loop elems[i] =  ", elems[i]);
+                        // console.log("in the loop");
+                        // whatIsThis.renderer.needsUpdate;
+                        whatIsThis.renderer.setClearColor(65280, 1);
+                    } else if (i === 4) // whatIsThis.renderer.needsUpdate;
+                    whatIsThis.renderer.setClearColor(0, 1);
+                // else if (i === 1) {
+                //   //   console.log("i = ", i);
+                //   //   // console.log("in the loop");
+                //   //   // console.log("i = ", i);
+                //   whatIsThis.render.needsUpdate;
+                //   whatIsThis.renderer.setClearColor(0x0000ff, 1);
+                // } else if (i === 3) {
+                //   console.log("i = ", i);
+                //   // console.log("in the loop");
+                //   // console.log("i = ", i);
+                //   whatIsThis.render.needsUpdate;
+                //   whatIsThis.renderer.setClearColor(0xff0000, 1);
+                // }
+                // }
+                // console.log("in loop i =  ", i);
+                }
+            // }
+            });
+            window.requestAnimationFrame(colorChangeOnScroll);
+        }
+        setInterval(colorChangeOnScroll(), 500);
+        // this.renderer.setClearColor(0xff0000, 1);
+        // console.log(images);
+        // if (images[1].style) {
+        //   // console.log("images = ", images);
+        //   this.renderer.setClearColor(0x0000ff, 1);
+        // }
         this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);

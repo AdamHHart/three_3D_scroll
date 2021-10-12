@@ -1,6 +1,8 @@
 import Sketch from "./module";
 import gsap from "gsap";
 import { BufferGeometryLoader } from "three";
+import * as THREE from "three";
+import { _renderComplexString } from "gsap/gsap-core";
 
 let sketch = new Sketch({
   dom: document.getElementById("container"),
@@ -16,12 +18,16 @@ let wrap = document.getElementById("wrap");
 let headlines = document.getElementById("headline");
 let elems = [...document.querySelectorAll(".n")];
 
+// let background = new THREE.background();
+// background.color = "#ffffff";
+
 window.addEventListener("wheel", (e) => {
   // console.log("e = ", e);
   speed += e.deltaY * 0.0003;
 });
 
 let objs = Array(5).fill({ dist: 0 });
+console.log("objs = ", objs);
 
 function raf() {
   // console.log("speed = ", speed);
@@ -39,19 +45,15 @@ function raf() {
 
     // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
     sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
-
+    // console.log("o.dist = = ", o.dist);
     if (o.dist > 0.9) {
+      // console.log("i = ", i);
       elems[i].style.color = "#ff0000";
       elems[i].style.transition = "0.5s";
       elems[i].style.opacity = 1;
-
-      console.log("headlines = ", headlines);
     } else {
       elems[i].style.color = "#000000";
       elems[i].style.opacity = 0;
-    }
-    if (i) {
-      wrap.style.background = "#000000";
     }
   });
 
