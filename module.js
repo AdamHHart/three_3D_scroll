@@ -142,6 +142,8 @@ export default class Sketch {
     }
   }
 
+  renderBackground() {}
+
   render() {
     if (!this.isPlaying) return;
     this.time += 0.05;
@@ -150,71 +152,6 @@ export default class Sketch {
         m.uniforms.time.value = this.time;
       });
     }
-
-    let speed = 0;
-    let position = 0;
-    let elems = [...document.querySelectorAll(".n")];
-
-    window.addEventListener("wheel", (e) => {
-      speed += e.deltaY * 0.0003;
-    });
-
-    let images = Array(5).fill({ dist: 0 });
-
-    function colorChangeOnScroll() {
-      position += speed;
-      speed *= 0.8;
-
-      images.forEach((o, i) => {
-        o.dist = Math.min(Math.abs(position - i), 1);
-        o.dist = 1 - o.dist ** 2;
-
-        // console.log("o.dist = = ", o.dist);
-        // for (let j = 0; j < images.length; j++) {
-        if (o.dist > 0.9) {
-          // console.log("i ======= ", i);
-          if (i === 2) {
-            console.log("i = ", i);
-            // console.log("in loop elems[i] =  ", elems[i]);
-            // console.log("in the loop");
-            // whatIsThis.renderer.needsUpdate;
-            whatIsThis.renderer.setClearColor(0x00ff00, 1);
-          }
-          // else if (i === 4) {
-          //   // whatIsThis.renderer.needsUpdate;
-          //   whatIsThis.renderer.setClearColor(0x000000, 1);
-          //   // setClearColor(0x000000, 1);
-          // }
-          // else if (i === 1) {
-          //   //   console.log("i = ", i);
-          //   //   // console.log("in the loop");
-          //   //   // console.log("i = ", i);
-          //   whatIsThis.render.needsUpdate;
-          //   whatIsThis.renderer.setClearColor(0x0000ff, 1);
-          // } else if (i === 3) {
-          //   console.log("i = ", i);
-          //   // console.log("in the loop");
-          //   // console.log("i = ", i);
-          //   whatIsThis.render.needsUpdate;
-          //   whatIsThis.renderer.setClearColor(0xff0000, 1);
-          // }
-          // }
-          // console.log("in loop i =  ", i);
-        }
-        // }
-      });
-      window.requestAnimationFrame(colorChangeOnScroll);
-    }
-
-    setInterval(colorChangeOnScroll(), 500);
-
-    // this.renderer.setClearColor(0xff0000, 1);
-
-    // console.log(images);
-    // if (images[1].style) {
-    //   // console.log("images = ", images);
-    //   this.renderer.setClearColor(0x0000ff, 1);
-    // }
 
     this.material.uniforms.time.value = this.time;
     requestAnimationFrame(this.render.bind(this));

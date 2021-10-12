@@ -43,17 +43,35 @@ function raf() {
     sketch.meshes[i].position.y = i * 1.2 - position * 1.2;
     sketch.meshes[i].scale.set(scale, scale, scale);
 
-    // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
     sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
-    // console.log("o.dist = = ", o.dist);
+
     if (o.dist > 0.9) {
-      // console.log("i = ", i);
+      // Background color change on image scroll
+      if (i == 0) {
+        sketch.renderer.setClearColor(0xffffff, 1);
+      }
+      if (i == 1) {
+        sketch.renderer.setClearColor(0xff0000, 1);
+      }
+      if (i == 2) {
+        sketch.renderer.setClearColor(0x00ff00, 1);
+      }
+      if (i == 3) {
+        sketch.renderer.setClearColor(0x0000ff, 1);
+      }
+      if (i == 4) {
+        sketch.renderer.setClearColor(0x000000, 1);
+      }
+
+      // Text Headlines Visible
       elems[i].style.color = "#ff0000";
       elems[i].style.transition = "0.5s";
       elems[i].style.opacity = 1;
     } else {
+      // Text Headlines Hidden
       elems[i].style.color = "#000000";
       elems[i].style.opacity = 0;
+      // sketch.renderer.setClearColor(0xffffff, 0.5);
     }
   });
 

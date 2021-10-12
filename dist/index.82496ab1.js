@@ -497,17 +497,23 @@ function raf() {
         let scale = 1 + 0.2 * o.dist;
         sketch.meshes[i].position.y = i * 1.2 - position * 1.2;
         sketch.meshes[i].scale.set(scale, scale, scale);
-        // console.log("sketch.meshes[i] = ", sketch.meshes[i]);
         sketch.meshes[i].material.uniforms.distanceFromCenter.value = o.dist;
-        // console.log("o.dist = = ", o.dist);
         if (o.dist > 0.9) {
-            // console.log("i = ", i);
+            // Background color change on image scroll
+            if (i == 0) sketch.renderer.setClearColor(16777215, 1);
+            if (i == 1) sketch.renderer.setClearColor(16711680, 1);
+            if (i == 2) sketch.renderer.setClearColor(65280, 1);
+            if (i == 3) sketch.renderer.setClearColor(255, 1);
+            if (i == 4) sketch.renderer.setClearColor(0, 1);
+            // Text Headlines Visible
             elems[i].style.color = "#ff0000";
             elems[i].style.transition = "0.5s";
             elems[i].style.opacity = 1;
         } else {
+            // Text Headlines Hidden
             elems[i].style.color = "#000000";
             elems[i].style.opacity = 0;
+        // sketch.renderer.setClearColor(0xffffff, 0.5);
         }
     });
     rounded = Math.round(position);
@@ -721,68 +727,14 @@ class Sketch {
             this.isPlaying = true;
         }
     }
+    renderBackground() {
+    }
     render() {
         if (!this.isPlaying) return;
         this.time += 0.05;
         if (this.materials) this.materials.forEach((m)=>{
             m.uniforms.time.value = this.time;
         });
-        let speed = 0;
-        let position = 0;
-        let elems = [
-            ...document.querySelectorAll(".n")
-        ];
-        window.addEventListener("wheel", (e)=>{
-            speed += e.deltaY * 0.0003;
-        });
-        let images = Array(5).fill({
-            dist: 0
-        });
-        function colorChangeOnScroll() {
-            position += speed;
-            speed *= 0.8;
-            images.forEach((o, i)=>{
-                o.dist = Math.min(Math.abs(position - i), 1);
-                o.dist = 1 - o.dist ** 2;
-                // console.log("o.dist = = ", o.dist);
-                // for (let j = 0; j < images.length; j++) {
-                if (o.dist > 0.9) {
-                    // console.log("i ======= ", i);
-                    if (i === 2) {
-                        console.log("i = ", i);
-                        // console.log("in loop elems[i] =  ", elems[i]);
-                        // console.log("in the loop");
-                        // whatIsThis.renderer.needsUpdate;
-                        whatIsThis.renderer.setClearColor(65280, 1);
-                    } else if (i === 4) // whatIsThis.renderer.needsUpdate;
-                    whatIsThis.renderer.setClearColor(0, 1);
-                // else if (i === 1) {
-                //   //   console.log("i = ", i);
-                //   //   // console.log("in the loop");
-                //   //   // console.log("i = ", i);
-                //   whatIsThis.render.needsUpdate;
-                //   whatIsThis.renderer.setClearColor(0x0000ff, 1);
-                // } else if (i === 3) {
-                //   console.log("i = ", i);
-                //   // console.log("in the loop");
-                //   // console.log("i = ", i);
-                //   whatIsThis.render.needsUpdate;
-                //   whatIsThis.renderer.setClearColor(0xff0000, 1);
-                // }
-                // }
-                // console.log("in loop i =  ", i);
-                }
-            // }
-            });
-            window.requestAnimationFrame(colorChangeOnScroll);
-        }
-        setInterval(colorChangeOnScroll(), 500);
-        // this.renderer.setClearColor(0xff0000, 1);
-        // console.log(images);
-        // if (images[1].style) {
-        //   // console.log("images = ", images);
-        //   this.renderer.setClearColor(0x0000ff, 1);
-        // }
         this.material.uniforms.time.value = this.time;
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
