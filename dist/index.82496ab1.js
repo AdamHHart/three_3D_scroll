@@ -662,7 +662,7 @@ class Sketch {
             mesh.position.x = 0.6;
             // mesh.position.z = 0.1;
             group.rotation.y = -0.4;
-            group.rotation.x = -0.2;
+            group.rotation.x = -0.3;
             group.rotation.z = -0.2;
         });
     }
@@ -31081,7 +31081,7 @@ if (typeof window !== 'undefined') {
 module.exports = "#define GLSLIFY 1\n\nuniform float time; \nuniform float progress;\nuniform float distanceFromCenter;\nuniform sampler2D texture1;\nuniform vec4 resolution;\n\nvarying vec2 vUv;\nvarying vec3 vPosition;\n\nfloat PI = 3.14159265358979;\n\nvoid main()\t{\n\tvec4 t = texture2D(texture1, vUv);\n\tfloat bw = (t.r + t.b + t.g)/3.0;\n\tvec4 another = vec4(bw,bw,bw,1.0);\n\n\tgl_FragColor = mix(another, t, distanceFromCenter);\n\tgl_FragColor.a = clamp(distanceFromCenter, 0.2, 1.);\n}";
 
 },{}],"h9Sxp":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float time;\nvarying vec2 vUv;\nvarying vec3 vPosition;\nfloat PI = 3.14159265358979;\nuniform float distanceFromCenter;\n\nvoid main() {\n\n  vUv = (uv - vec2(0.5))*(0.8 - 0.2 * distanceFromCenter*(2. - distanceFromCenter)) + vec2(0.5);\n  vec3 pos = position;\n\n  pos.y += sin(PI*uv.x)*0.02; \n  pos.z += sin(PI*uv.x)*0.04; \n\n  \n  pos.y += sin(time*0.5)*0.02;\n  vUv.y -= sin(time*0.5)*0.02;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\nvarying vec2 vUv;\nvarying vec3 vPosition;\nfloat PI = 3.14159265358979;\nuniform float distanceFromCenter;\n\nvoid main() {\n\n  vUv = (uv - vec2(0.5))*(0.8 - 0.2 * distanceFromCenter*(2. - distanceFromCenter)) + vec2(0.5);\n  vec3 pos = position;\n\n  pos.y += sin(PI*uv.x)*0.1; \n  pos.z += sin(PI*uv.x)*0.1; \n\n  \n  pos.y += sin(time*0.5)*0.02;\n  vUv.y -= sin(time*0.5)*0.02;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n}";
 
 },{}],"iCVLt":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

@@ -80,7 +80,7 @@ export default class Sketch {
       // mesh.position.z = 0.1;
 
       group.rotation.y = -0.4;
-      group.rotation.x = -0.2;
+      group.rotation.x = -0.3;
       group.rotation.z = -0.2;
     });
   }
