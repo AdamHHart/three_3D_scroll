@@ -75,13 +75,13 @@ export default class Sketch {
       this.scene.add(group);
       this.meshes.push(mesh);
 
-      mesh.position.y = i * 1.2;
-      mesh.position.x = 0.6;
-      // mesh.position.z = 0.1;
+      mesh.position.y = i * 4;
+      mesh.position.x = 0.4;
+      mesh.position.z = 0.1;
 
-      group.rotation.y = -0.4;
-      group.rotation.x = -0.3;
-      group.rotation.z = -0.2;
+      group.rotation.y = -0.6;
+      group.rotation.x = -0.4;
+      group.rotation.z = -0.4;
     });
   }
 
